@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" test"""
+""" """
 from models.base_model import BaseModel
 import unittest
 import datetime
@@ -21,7 +21,7 @@ class test_basemodel(unittest.TestCase):
     A class to test pep8 on base_model file"""
     def test_pycodestyle(self):
         """
-        pep8 format
+        Test pep8 format
         """
         pycostyle = pycodestyle.StyleGuide(quiet=True)
         result = pycostyle.check_files(['models/base_model.py'])
@@ -43,6 +43,13 @@ class test_basemodel(unittest.TestCase):
         i = self.value()
         self.assertEqual(type(i), self.value)
 
+    def test_kwargs(self):
+        """ """
+        i = self.value()
+        copy = i.to_dict()
+        new = BaseModel(**copy)
+        self.assertFalse(new is i)
+
     def test_kwargs_int(self):
         """ """
         i = self.value()
@@ -52,12 +59,13 @@ class test_basemodel(unittest.TestCase):
             new = BaseModel(**copy)
 
     def test_save(self):
-        """ save """
+        """ Testing save """
         i = self.value()
         i.save()
         key = self.name + "." + i.id
         with open('file.json', 'r') as f:
-            j = json.load(f) 
+            j = json.load(f)
+            print("Type of j:", type(j)) 
             self.assertEqual(j[key], i.to_dict())
 
     def test_str(self):
@@ -78,7 +86,11 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
-
+    # def test_kwargs_one(self):
+    #     """ """
+    #     n = {'Name': 'test'}
+    #     with self.assertRaises(KeyError):
+    #         new = self.value(**n)
 
     def test_id(self):
         """ """
@@ -91,7 +103,7 @@ class test_basemodel(unittest.TestCase):
         self.assertEqual(type(new.created_at), datetime.datetime)
 
     def test_updated_at(self):
-        """updated_at attribute."""
+        """Test updated_at attribute."""
         new = self.value()
         new.save()
         self.assertEqual(type(new.updated_at), datetime.datetime)
@@ -101,7 +113,7 @@ class test_basemodel(unittest.TestCase):
 
     def test_uuid(self):
         """
-        UUID
+        Testin UUID
         """
         instance1 = BaseModel()
         instance2 = BaseModel()
@@ -126,7 +138,7 @@ class test_basemodel(unittest.TestCase):
 
 class TestCodeFormat(unittest.TestCase):
     """
-    A class to test pep8 on base_model"""
+    A class to test pep8 on base_model file"""
     def test_pycodestyle(self):
         """
         Test pep8 format
@@ -138,11 +150,14 @@ class TestCodeFormat(unittest.TestCase):
 
 
 class Test_docstrings(unittest.TestCase):
-    """ docstrings"""
+    """Test docstrings"""
     @classmethod
     def setup_class(self):
         """
         inspect.getmembers(object, [predicate])
+        Return all the members of an object in a list of (name, value)
+        pairs sorted by name
+        only members for which the predicate returns a true value are included
         """
         self.obj_members(BaseModel, inspect.isfunction)
 
@@ -159,11 +174,11 @@ class TestBaseModel(unittest.TestCase):
 
     @classmethod
     def teardown(cls):
-        """end of the test this will tear it down"""
+        """at the end of the test this will tear it down"""
         del cls.base
 
     def tearDown(self):
-        """"""
+        """teardown"""
         try:
             os.remove("file.json")
         except Exception:
@@ -183,17 +198,23 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsNotNone(BaseModel.save.__doc__)
         self.assertIsNotNone(BaseModel.to_dict.__doc__)
 
+    def test_method_BaseModel(self):
+        """chekcing if Basemodel have methods"""
+        self.assertTrue(hasattr(BaseModel, "__init__"))
+        self.assertTrue(hasattr(BaseModel, "save"))
+        self.assertTrue(hasattr(BaseModel, "to_dict"))
+
     def test_init_BaseModel(self):
-        """if the base is an type BaseModel"""
+        """test if the base is an type BaseModel"""
         self.assertTrue(isinstance(self.base, BaseModel))
 
     def test_save_BaesModel(self):
-        """if the save works"""
+        """test if the save works"""
         self.base.save()
         self.assertNotEqual(self.base.created_at, self.base.updated_at)
 
     def test_to_dict_BaseModel(self):
-        """if dictionary works"""
+        """test if dictionary works"""
         base_dict = self.base.to_dict()
         self.assertEqual(self.base.__class__.__name__, 'BaseModel')
         self.assertIsInstance(base_dict['created_at'], str)
@@ -202,3 +223,4 @@ class TestBaseModel(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

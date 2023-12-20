@@ -1,33 +1,31 @@
 #!/usr/bin/python3
-"""This module defines a class to manage file storage for hbnb and Airbnb clone
-"""
+"""This is the file storage class for AirBnB"""
 import json
-import jsonpickle
 from models.base_model import BaseModel
 from models.user import User
-from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
+from models.place import Place
 from models.review import Review
 import shlex
 
 
 class FileStorage:
-    """This class  manages storage of hbnb models in JSON format,
-       also serializes instances to a JSON file and deserializes
-       JSON file to instances
+    """This class serializes instances to a JSON file and
+    deserializes JSON file to instances
     Attributes:
         __file_path: path to the JSON file
         __objects: objects will be stored
     """
-
-    __file_path = 'file.json'
+    __file_path = "file.json"
     __objects = {}
 
     def all(self, cls=None):
-        """Returns a dictionary of models currently in storage"""
-
+        """returns a dictionary
+        Return:
+            returns a dictionary of __object
+        """
         dic = {}
         if cls:
             dictionary = self.__objects
@@ -43,23 +41,29 @@ class FileStorage:
     def new(self, obj):
         """sets __object to given obj
         Args:
-        obj: given object
+            obj: given object
         """
         if obj:
-            key = f"{type(obj).__name__}.{obj.id}"
+            key = "{}.{}".format(type(obj).__name__, obj.id)
             self.__objects[key] = obj
 
     def save(self):
         """serialize the file path to JSON file path
         """
+        my_dict = {}
+        for key, value in self.__objects.items():
+            my_dict[key] = value.to_dict()
         with open(self.__file_path, 'w', encoding="UTF-8") as f:
-            json.dump(jsonpickle.encode(self.__objects), f)
+            json.dump(my_dict, f)
 
     def reload(self):
-        """serialize the file path to JSON file"""
+        """serialize the file path to JSON file path
+        """
         try:
             with open(self.__file_path, 'r', encoding="UTF-8") as f:
-                self.__objects = jsonpickle.decode(json.load(f))
+                for key, value in (json.load(f)).items():
+                    value = eval(value["__class__"])(**value)
+                    self.__objects[key] = value
         except FileNotFoundError:
             pass
 
@@ -74,3 +78,4 @@ class FileStorage:
         """ calls reload()
         """
         self.reload()
+

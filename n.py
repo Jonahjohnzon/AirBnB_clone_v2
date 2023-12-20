@@ -24,12 +24,11 @@ class test_Amenity(test_basemodel):
     def test_name2(self):
         """ """
         new = self.value()
-        new.name = "Some Name"
         self.assertEqual(type(new.name), str)
 
 
 class Test_PEP8(unittest.TestCase):
-    """ User"""
+    """test User"""
     def test_pep8_user(self):
         """test pep8 style"""
         pep8style = pycodestyle.StyleGuide(quiet=True)
@@ -39,7 +38,7 @@ class Test_PEP8(unittest.TestCase):
 
 
 class test_inherit_basemodel(unittest.TestCase):
-    """if user inherit from BaseModel"""
+    """Test if user inherit from BaseModel"""
     def test_instance(self):
         """check if user is an instance of BaseModel"""
         user = Amenity()
@@ -49,31 +48,31 @@ class test_inherit_basemodel(unittest.TestCase):
 
 
 class test_Amenity_BaseModel(unittest.TestCase):
-    """Testing user class"""
+    """user class"""
     def test_instances(self):
         with patch('models.amenity'):
             instance = Amenity()
             self.assertEqual(type(instance), Amenity)
             instance.name = "Barbie"
-            expectec_attrs_t = {
+            expectec_attrs_= {
                     "id": str,
                     "created_at": datetime,
                     "updated_at": datetime,
                     "name": str,
                     }
             inst_dict = instance.to_dict()
-            expected_dict_s = [
+            expected_dict_attrs = [
                     "id",
                     "created_at",
                     "updated_at",
                     "name",
                     "__class__"
                     ]
-            self.assertCountEqual(inst_dict.keys(), expected_dict_s)
+            self.assertCountEqual(inst_dict.keys(), expected_dict_attrs)
             self.assertEqual(inst_dict['name'], 'Barbie')
             self.assertEqual(inst_dict['__class__'], 'Amenity')
 
-            for attr, types in expectec_attrs_t.items():
+            for attr, types in expectec_attrs_.items():
                 with self.subTest(attr=attr, typ=types):
                     self.assertIn(attr, instance.__dict__)
                     self.assertIs(type(instance.__dict__[attr]), types)
@@ -103,7 +102,7 @@ class test_Amenity_BaseModel(unittest.TestCase):
 
     def test_str_method(self):
         """
-        Testin str magic method
+        Testing str magic method
         """
         inst = Amenity()
         str_output = "[Amenity] ({}) {}".format(inst.id, inst.__dict__)
@@ -119,8 +118,8 @@ class test_Amenity_BaseModel(unittest.TestCase):
         instance5.save()
         new_created_at = instance5.created_at
         sleep(2)
-        new_updated_ = instance5.updated_at
-        self.assertNotEqual(updated_at, new_updated_)
+        new_updated_at = instance5.updated_at
+        self.assertNotEqual(updated_at, new_updated_at)
         self.assertEqual(created_at, new_created_at)
         self.assertTrue(mock_storage.save.called)
 
@@ -129,12 +128,29 @@ class TestAmenity(unittest.TestCase):
     """Amenity class"""
 
     def test_is_subclass(self):
-        """that Amenity is a subclass of BaseModel"""
+        """Test that Amenity is a subclass of BaseModel"""
         amenity = Amenity()
         self.assertIsInstance(amenity, BaseModel)
         self.assertTrue(hasattr(amenity, "id"))
         self.assertTrue(hasattr(amenity, "created_at"))
         self.assertTrue(hasattr(amenity, "updated_at"))
+
+    def test_name_attr(self):
+        """Test that Amenity has attribute name, and it's as an empty string"""
+        amenity = Amenity()
+        self.assertTrue(hasattr(amenity, "name"))
+        if storage_t == 'db':
+            self.assertEqual(amenity.name, None)
+    def test_to_dict_values(self):
+        """values in dict returned from to_dict are correct"""
+        t_format = "%Y-%m-%dT%H:%M:%S.%f"
+        a = Amenity()
+        new_d = a.to_dict()
+        self.assertEqual(new_d["__class__"], "Amenity")
+        self.assertEqual(type(new_d["created_at"]), str)
+        self.assertEqual(type(new_d["updated_at"]), str)
+        self.assertEqual(new_d["created_at"], a.created_at.strftime(t_format))
+        self.assertEqual(new_d["updated_at"], a.updated_at.strftime(t_format))            self.assertEqual(amenity.name, "")
 
     def test_to_dict_creates_dict(self):
         """to_dict method creates a dictionary with proper attrs"""
@@ -144,7 +160,7 @@ class TestAmenity(unittest.TestCase):
         self.assertEqual(type(new_d), dict)
         self.assertFalse("_sa_instance_state" in new_d)
         for attr in a.__dict__:
-            if (attr != "_sa_instance_state"):
+            if attr is not "_sa_instance_state":
                 self.assertTrue(attr in new_d)
         self.assertTrue("__class__" in new_d)
 

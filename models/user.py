@@ -8,8 +8,6 @@ from sqlalchemy.orm import relationship
 from models.place import Place
 from models.review import Review
 
-Base = declarative_base()
-
 
 class User(BaseModel, Base):
     """This is class for user """

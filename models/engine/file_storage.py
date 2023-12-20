@@ -12,6 +12,7 @@ from models.amenity import Amenity
 from models.review import Review
 import shlex
 
+
 class FileStorage:
     """This class  manages storage of hbnb models in JSON format,
        also serializes instances to a JSON file and deserializes
@@ -39,26 +40,22 @@ class FileStorage:
         else:
             return self.__objects
 
-  
     def new(self, obj):
         """sets __object to given obj
         Args:
         obj: given object
         """
         if obj:
-           key = f"{type(obj).__name__}.{obj.id}"
-           self.__objects[key] = obj
-
+            key = f"{type(obj).__name__}.{obj.id}"
+            self.__objects[key] = obj
 
     def save(self):
         """serialize the file path to JSON file path
         """
         with open(self.__file_path, 'w', encoding="UTF-8") as f:
-             json.dump(jsonpickle.encode(self.__objects), f)
+            json.dump(jsonpickle.encode(self.__objects), f)
 
- 
     def reload(self):
-
         """serialize the file path to JSON file"""
         try:
             with open(self.__file_path, 'r', encoding="UTF-8") as f:
@@ -66,14 +63,12 @@ class FileStorage:
         except FileNotFoundError:
             pass
 
-
     def delete(self, obj=None):
         """ delete an existing element
         """
         if obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
             del self.__objects[key]
-
 
     def close(self):
         """ calls reload()

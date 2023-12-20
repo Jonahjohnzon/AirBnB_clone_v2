@@ -10,6 +10,7 @@ from models.review import Review
 
 Base = declarative_base()
 
+
 class User(BaseModel, Base):
     """This is class for user """
     __tablename__ = "users"

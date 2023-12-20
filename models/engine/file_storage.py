@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-"""This module defines a class to manage file storage for hbnb
-   and Airbnb clone
+"""This module defines a class to manage file storage for hbnb and Airbnb clone
 """
 import json
 import jsonpickle
@@ -58,13 +57,13 @@ class FileStorage:
 
  
     def reload(self):
-    """serialize the file path to JSON file path
-    """
-    try:
-        with open(self.__file_path, 'r', encoding="UTF-8") as f:
-            self.__objects = jsonpickle.decode(json.load(f))
-    except FileNotFoundError:
-        pass
+
+        """serialize the file path to JSON file"""
+        try:
+            with open(self.__file_path, 'r', encoding="UTF-8") as f:
+                self.__objects = jsonpickle.decode(json.load(f))
+        except FileNotFoundError:
+            pass
 
 
     def delete(self, obj=None):

@@ -7,6 +7,7 @@ import pep8
 import os
 import unittest
 
+
 class test_City(test_basemodel):
     """ """
 
@@ -77,7 +78,6 @@ class TestCity(unittest.TestCase):
         self.assertTrue('updated_at' in self.city.__dict__)
         self.assertTrue('state_id' in self.city.__dict__)
         self.assertTrue('name' in self.city.__dict__)
-
 
     def test_attribute_types_City(self):
         """test attribute type for City"""

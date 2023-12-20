@@ -9,6 +9,7 @@ import os
 import pycodestyle
 import pep8
 
+
 class test_basemodel(unittest.TestCase):
     """ """
 
@@ -35,7 +36,7 @@ class test_basemodel(unittest.TestCase):
     def tearDown(self):
         try:
             os.remove('file.json')
-        except:
+        except FileNotFoundError:
             pass
 
     def test_default(self):
@@ -57,7 +58,7 @@ class test_basemodel(unittest.TestCase):
         i.save()
         key = self.name + "." + i.id
         with open('file.json', 'r') as f:
-            j = json.load(f) 
+            j = json.load(f)
             self.assertEqual(j[key], i.to_dict())
 
     def test_str(self):
@@ -77,8 +78,6 @@ class test_basemodel(unittest.TestCase):
         n = {None: None}
         with self.assertRaises(TypeError):
             new = self.value(**n)
-
-
 
     def test_id(self):
         """ """

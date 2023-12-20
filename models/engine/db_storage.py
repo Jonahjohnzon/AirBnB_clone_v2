@@ -23,8 +23,8 @@ class DBStorage:
 
         The __init__ method creates a new instance of the DBStorage class
         and configures the SQLAlchemy engine for MySQL database connection.
-        database, and host. If the environment is set to "test", existing tables
-        are dropped for a clean testing environment.
+        database, and host. If the environment is set to "test",
+        existing tables are dropped for a clean testing environment.
 
         Args:
             None
@@ -87,4 +87,3 @@ class DBStorage:
     def close(self):
         """call remove()"""
         self.__session.close()
-

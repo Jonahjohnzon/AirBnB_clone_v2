@@ -1,18 +1,19 @@
 #!/usr/bin/python3
-
-"""This module initializes the models package
-"""
-
+"""create a unique FileStorage"""
+from models.engine.file_storage import FileStorage
+from models.engine.db_storage import DBStorage
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from os import getenv
-from models.engine import db_storage
-from models.engine import file_storage
 
 
-db_storage_type = getenv('HBNB_TYPE_STORAGE')
-
-if db_storage_type == 'db':
-    storage = db_storage.DBStorage()
-    storage.reload()
+if getenv("HBNB_TYPE_STORAGE") == "db":
+    storage = DBStorage()
 else:
-    storage = file_storage.FileStorage()
-    storage.reload()
+    storage = FileStorage()
+storage.reload()

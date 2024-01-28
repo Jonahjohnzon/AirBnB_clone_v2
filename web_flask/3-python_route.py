@@ -21,7 +21,8 @@ def hbnb():
 @app.route("/c/<text>", strict_slashes=False)
 def c(text):
     """Display 'C' followed by value of <text>.
-    Replac any underscore in <text> with slashes.
+
+    Replace any underscore in <text> with slash.
     """
     text = text.replace("_", " ")
     return "C {}".format(text)
@@ -31,7 +32,8 @@ def c(text):
 @app.route("/python/<text>", strict_slashes=False)
 def python(text="is cool"):
     """Display 'Python' followed by value of <text>.
-    Replace any underscore in <text> with slashes.
+
+    Replace any underscore in <text> with slash.
     """
     text = text.replace("_", " ")
     return "Python {}".format(text)
